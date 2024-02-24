@@ -1,137 +1,41 @@
-* AutoDrone-px4
-# 基于ROS的自主无人机框架
-![image](https://github.com/TheRoadToReality/AutoDrone-px4/blob/main/assets/logo.png#pic_center)
-# 硬件架构
-```bash
-主控:px4(STM32F427Vit6)
-ROS算法/视觉运行平台:Nvidia Jetson NX
-VIO: T265
-动力套:Tmotor 
-机械结构：x450
-协处理器：ESP32-microROS
-```
-![image](https://github.com/TheRoadToReality/AutoDrone-px4/blob/main/assets/drone_v1.png#pic_center)
-## Dependencies
-* Ros:
-```bash
-wget http://fishros.com/install -O fishros && . fishros
+设计一个基于STM32和ESP32的桌面宠物是一个很有趣的想法！下面是设计该宠物的指南和文档，希望能增加趣味性：
 
-```
-* Python-ROS:
-* For Ubuntu 18.04 and Under version
-```bash
-sudo apt install python-rosdep python-rosinstall python-rosinstall-generator python-wstool build-essential
-sudo apt install python-rosdep
-sudo rosdep init
-rosdep update
-rosversion -d
-```
-* For Ubnutu 20.04 and above version
-```bash
-sudo apt install python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential
-```
-* librealsense: 
-```bash
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE || sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE
-sudo add-apt-repository "deb https://librealsense.intel.com/Debian/apt-repo $(lsb_release -cs) main" -u
-sudo apt-get install librealsense2-utils
-sudo apt-get install librealsense2-dev
-```
+---
 
+### 桌面宠物设计文档: 小龙助手 🐉
 
-## Installation
-安装ROS1
+#### 设计概念:
+小龙助手是一款基于STM32和ESP32的智能桌面宠物，结合了各种有趣的功能，如与用户互动、语音识别、文字生成、游戏助手等。小龙外形可爱，会动会说，是您专属的桌面好伙伴！
 
-1. 安装catkin工具链:
+#### 主要功能:
+1. **互动功能**:
+   - 小龙会对用户的口令做出动作响应，如点头、摇尾巴等。
+   - 用户可以通过触摸或声控对小龙进行操作。
 
-   ```bash
-   sudo apt install python-catkin-tools
+2. **ChatGPT接入**:
+   - 小龙可以连接到ChatGPT服务，与用户进行智能对话，分享知识、讲笑话或解答问题。
 
-   ```
+3. **游戏助手**:
+   - 当检测到游戏队友对用户的负面言论时，小龙会自动开启幽默模式，讲一个笑话转移注意力，提升游戏体验。
 
-1. 克隆这个仓库
+4. **特殊功能**:
+   - 能检测用户情绪，当用户心情低落时，小龙会变得更亲近，并尝试安慰用户。
+   - 小龙还可以提供天气预报、时间提醒等实用功能。
 
-   ```bash
-   git clone  https://github.com/TheRoadToReality/AutoDrone-px4.git
-   cd AutoDrone-px4/catkin_ws
-   catkin clean
+#### 硬件需求:
+1. STM32微控制器：负责控制小龙的动作和交互。
+2. ESP32模块：用于连接WiFi网络，实现与ChatGPT等服务的通信。
+3. 触摸传感器: 用于控制小龙互动。
+4. 语音识别模块和扬声器: 实现语音交互功能。
 
-   ```
+#### 外壳设计:
+- 小龙外形呆萌可爱，带有发光的LED眼睛和翅膀，可通过PWM调节颜色和亮度。
+- 外壳材质选择柔软橡胶或ABS塑料，手感舒适且耐用。
+- 可在小龙身上设计emoji表情，包括笑脸、爱心、惊讶等，让用户更容易理解小龙的情绪和状态。
 
-1. 安装 MAVROS
-   * Kinetic(Ubuntu 16.04)
-     ```bash
-     sudo apt install ros-kinetic-mavros ros-kinetic-mavros-extras
-     ```
-   * Melodic(Ubuntu 18.04)
-     ```bash
-     sudo apt install ros-melodic-mavros ros-melodic-mavros-extras
-     ```
-   * Noetic(Ubuntu 20.04)
-     ```
-     sudo apt install ros-noetic-mavros ros-noetic-mavros-extras
-1. 安装地理信息图集 [GeographicLib] 
-   ```bash
-   wget https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh
-   sudo bash ./install_geographiclib_datasets.sh   
-   ```
+#### 结语:
+小龙助手将成为您的智能桌面好伙伴，带给您乐趣和陪伴。希望这份设计文档能激发您对桌面宠物的创意和热情！
 
-1. Install the [realsense2_camera] 在ROS中启动T265:
-   * Kinetic(Ubuntu 16.04)
-   ```bash
-   sudo apt install ros-Kinedic-realsense2-camera
-   ```
-   * Melodic(Ubuntu 18.04)
-   ```bash
-   sudo apt install ros-melodic-realsense2-camera
-   ```
-   * Noetic(Ubuntu 20.04)
-   ```bash
-   sudo apt install ros-noetic-realsense2-camera ros-noetic-cv-bridge libopencv-dev
+---
 
-   ```
-
-1. 安装ROS点云库 (PCL):
-
-   * Melodic
-     ```bash
-     sudo apt install ros-melodic-pcl-ros
-     ```
-   * Kinetic
-     ```bash
-     sudo apt install ros-kinetic-pcl-ros
-     ```
-   * Noetic
-     ```bash
-     sudo apt install ros-noetic-pcl-ros
-
-1. 编译这个package:
-
-   ```bash
-   cd ~/Autodrone_px4/catkin_ws
-   catkin build px4_realsense_bridge
-   ```
-
-1. 启动ROS节点:
-
-   ```bash
-   source ./devel/catkin_ws/devel/setup.bash
-   roslaunch px4_realsense_bridge bridge_mavros.launch
-   ```
-1. 启动外部控制文件:
-   ```bash
-   cd /Autodrone_px4/offboard
-   catkin build
-   Run
-   ```
-# 功能介绍
-* 自主跟踪（已完成）
-* 自主避障（已完成）
-* 路径规划（已完成）
-* 外部机械臂（待开发）
-* T265_VIO SLAM（已完成）
-* 激光雷达SLAM（待开发）
-* 集群算法（已完成）
-* 示教模式<无人机飞到曾经飞过的位置>(已完成)
-* 迁移到自制飞控(开发中..)
-* 增加中....
+希望这份文档能够为您的桌面宠物设计提供一些启发和指导。祝您设计过程顺利，打造出一个独特而有趣的小龙助手！如果您需要进一步的帮助或有任何疑问，请随时告诉我。
